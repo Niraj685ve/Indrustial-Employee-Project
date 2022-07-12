@@ -1,9 +1,15 @@
 package com.employee.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +23,7 @@ public class UserAdminController
 {
 	@Autowired
 	AdminInterRepo repo;
+	
 
 	@PostMapping("/registration")
 	public ResponseEntity<?> registerUserDetails(@RequestBody UserAdmin admin)
@@ -69,5 +76,28 @@ public class UserAdminController
 		{
 			return new ResponseEntity<String>("5th satge error--->Username is not available",HttpStatus.ACCEPTED);
 		}
+	}
+	
+	
+	@GetMapping("/forgetpassword/{phonenumber}")
+	public ResponseEntity<?> forgetPasswordFetchMobileNumber(@PathVariable String phonenumber,HttpSession session)
+	{
+		System.err.println("Get the Phone Number :: "+phonenumber);
+		String mobileNo=phonenumber;
+		if(!this.repo.findByPhonenumber(phonenumber).isEmpty())
+		{
+			session.setAttribute("m", mobileNo);
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		}
+		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/resetpassword/{password}")
+	public  ResponseEntity<?> resetPassword(@PathVariable String password,HttpSession session)
+	{
+		System.out.println((String)session.getAttribute("m"));
+		List<UserAdmin> userAdminData = this.repo.findByPhonenumber((String) session.getAttribute("MobileNumber"));
+		System.err.println(userAdminData);
+		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 }
