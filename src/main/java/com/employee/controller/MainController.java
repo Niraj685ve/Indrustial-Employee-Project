@@ -28,7 +28,7 @@ public class MainController
 
 	//create employee
 	@PostMapping("/create")
-	public ResponseEntity<?> createEmployee(@RequestBody com.employee.entity.Employee employee)
+	public ResponseEntity<?> createEmployee(@RequestBody Employee employee)
 	{
 		System.err.println("Create Employee From Angular port-4200 synchronised :: "+employee);
 		CatchOperation.catche.put(employee.getEmployeeID(), employee);
