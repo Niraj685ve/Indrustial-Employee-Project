@@ -30,32 +30,31 @@ public class CatchOperation
 	public static HashMap<String , UserAdmin> catche1 =new HashMap<>();
 	public static List<UserAdmin> adminlist;
 
-	@Scheduled(cron = "0 */15 * ? * *")  // scheduled performance 
+	@Scheduled(cron = "0 */1 * ? * *")  // scheduled performance 
 	@PostConstruct  // work as init method as load when application started as once 
 	public void loadCatche()
 	{
-		System.out.println("Catche load memory"+new Date());
+		System.err.println("Catche load memory"+new Date());
 		employeeslist = repo.findAll();
-		repo.findAll().forEach(t -> System.err.println("Direct ID Available DATABASE:: "+t.getEmployeeID()));
 		if(!employeeslist.isEmpty())
 		{
 			catche.clear();
 			employeeslist.forEach(t -> catche.put(t.getEmployeeID(), t));
+			catche.entrySet().forEach(t -> System.out.println(t));
 		}
 	}
 	
 	
-	@Scheduled(cron = "0 */15 * ? * *")  // scheduled performance 
+	@Scheduled(cron = "0 */1 * ? * *")  // scheduled performance 
 	@PostConstruct  // work as init method as load when application started as once 
 	public void adminLoadCatche()
 	{
-		System.out.println("Admin Panel Catche load memory"+new Date());
+		System.err.println("Admin Panel Catche load memory"+new Date());
 		adminlist=adminRepo.findAll();
 		if(!adminlist.isEmpty())
 		{
 			catche1.clear();
 			adminlist.forEach(t -> catche1.put(t.getUsername(), t));
-			catche1.values().forEach(t -> System.err.println("Admin Data loaded from the Databse to hash "+t));
 		}
 	}
 }
