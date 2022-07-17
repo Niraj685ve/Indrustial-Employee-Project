@@ -41,13 +41,14 @@ public class MainController
 	{
 //		Optional<Employee> employee = repo.findById(id);
 //		System.err.println("Find By Id "+employee);
-		if(repo.findById(id).isPresent())
+		if(CatchOperation.catche.get(id)!=null)
 		{
-//			Employee employee = CatchOperation.catche.get(id);
-//			return new ResponseEntity<Employee>(employee,HttpStatus.ACCEPTED);
+			Employee employee = CatchOperation.catche.get(id);
+			System.err.println("Loding employe by catche ::"+employee);
+			return new ResponseEntity<Employee>(employee,HttpStatus.ACCEPTED);
 			
-			Optional<Employee> findById = repo.findById(id);
-			return new ResponseEntity<Optional<Employee>>(findById,HttpStatus.ACCEPTED);
+//			Optional<Employee> findById = repo.findById(id);
+//			return new ResponseEntity<Optional<Employee>>(findById,HttpStatus.ACCEPTED);
 			
 		}
 		return new ResponseEntity<String>("Id is not Found or Id is deleted ",HttpStatus.NOT_FOUND);
@@ -58,8 +59,8 @@ public class MainController
 	@GetMapping("/get")
 	public ResponseEntity<?> getAllEmployee()
 	{
-		return new ResponseEntity<List<Employee>>(repo.findAll(),HttpStatus.OK);
-//		return new ResponseEntity<List<Employee>>(CatchOperation.catche.values().stream().toList(),HttpStatus.OK);
+//		return new ResponseEntity<List<Employee>>(repo.findAll(),HttpStatus.OK);
+		return new ResponseEntity<List<Employee>>(CatchOperation.catche.values().stream().toList(),HttpStatus.OK);
 	}
 
 
@@ -85,6 +86,7 @@ public class MainController
 		if(repo.findById(id).isPresent())
 		{
 			repo.deleteById(id);
+			
 			return new ResponseEntity<List<Employee>>(repo.findAll(),HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<String>("Id is not Found or id is deletd",HttpStatus.NOT_FOUND);
